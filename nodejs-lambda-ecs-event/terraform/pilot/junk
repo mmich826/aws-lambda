@@ -1,0 +1,236 @@
+[0m[0m
+[0m
+module.resources.aws_cloudwatch_event_rule.inv-pipe-s3-lambda-trigger:
+  id = inv-pipe-s3-lambda-trigger
+  arn = arn:aws:events:us-east-1:421956431754:rule/inv-pipe-s3-lambda-trigger
+  description = Event rule to trigger lambda function to start ECS task every day
+  is_enabled = true
+  name = inv-pipe-s3-lambda-trigger
+  role_arn = 
+  schedule_expression = cron(13 18 * * ? *)
+  tags.% = 0
+module.resources.aws_cloudwatch_event_target.inv-pipe-s3-lambda-target:
+  id = inv-pipe-s3-lambda-trigger-inv-pipe-s3-lambda-target
+  arn = arn:aws:lambda:us-east-1:421956431754:function:inv-pipe-s3-lambda
+  input = 
+  input_path = 
+  role_arn = 
+  rule = inv-pipe-s3-lambda-trigger
+  target_id = inv-pipe-s3-lambda-target
+module.resources.aws_cloudwatch_log_group.inv-pipe-s3-lambda-log-group:
+  id = /ecs/inventory-pipeline-pilot
+  arn = arn:aws:logs:us-east-1:421956431754:log-group:/ecs/inventory-pipeline-pilot:*
+  kms_key_id = 
+  name = /ecs/inventory-pipeline-pilot
+  retention_in_days = 0
+  tags.% = 0
+module.resources.aws_cloudwatch_log_stream.debugStreamName:
+  id = debug-stream
+  arn = arn:aws:logs:us-east-1:421956431754:log-group:/ecs/inventory-pipeline-pilot:log-stream:debug-stream
+  log_group_name = /ecs/inventory-pipeline-pilot
+  name = debug-stream
+module.resources.aws_cloudwatch_log_stream.errorStreamName:
+  id = error-stream
+  arn = arn:aws:logs:us-east-1:421956431754:log-group:/ecs/inventory-pipeline-pilot:log-stream:error-stream
+  log_group_name = /ecs/inventory-pipeline-pilot
+  name = error-stream
+module.resources.aws_cloudwatch_log_stream.infoStreamName:
+  id = info-stream
+  arn = arn:aws:logs:us-east-1:421956431754:log-group:/ecs/inventory-pipeline-pilot:log-stream:info-stream
+  log_group_name = /ecs/inventory-pipeline-pilot
+  name = info-stream
+module.resources.aws_ecs_cluster.inv-pipe-s3-cluster:
+  id = arn:aws:ecs:us-east-1:421956431754:cluster/inv-pipe-s3-pilot
+  arn = arn:aws:ecs:us-east-1:421956431754:cluster/inv-pipe-s3-pilot
+  name = inv-pipe-s3-pilot
+  tags.% = 0
+module.resources.aws_ecs_service.inv-pipe-s3-lambda-service:
+  id = arn:aws:ecs:us-east-1:421956431754:service/inv-pipe-s3-pilot/inv-pipe-s3-lambda-pilot
+  cluster = arn:aws:ecs:us-east-1:421956431754:cluster/inv-pipe-s3-pilot
+  deployment_controller.# = 1
+  deployment_controller.0.type = ECS
+  deployment_maximum_percent = 200
+  deployment_minimum_healthy_percent = 100
+  desired_count = 0
+  enable_ecs_managed_tags = false
+  health_check_grace_period_seconds = 0
+  iam_role = aws-service-role
+  launch_type = FARGATE
+  load_balancer.# = 0
+  name = inv-pipe-s3-lambda-pilot
+  network_configuration.# = 1
+  network_configuration.0.assign_public_ip = false
+  network_configuration.0.security_groups.# = 0
+  network_configuration.0.subnets.# = 3
+  network_configuration.0.subnets.3268705857 = subnet-fb9c338d
+  network_configuration.0.subnets.339585020 = subnet-5eab6a06
+  network_configuration.0.subnets.3465800434 = subnet-7943b153
+  ordered_placement_strategy.# = 0
+  placement_constraints.# = 0
+  placement_strategy.# = 0
+  platform_version = LATEST
+  propagate_tags = NONE
+  scheduling_strategy = REPLICA
+  service_registries.# = 0
+  tags.% = 0
+  task_definition = inv-pipe-s3-pilot:7
+module.resources.aws_ecs_task_definition.inv-pipe-s3-service:
+  id = inv-pipe-s3-pilot
+  arn = arn:aws:ecs:us-east-1:421956431754:task-definition/inv-pipe-s3-pilot:7
+  container_definitions = [{"cpu":0,"environment":[{"name":"FORCE_ECS_DEPLOYMENT","value":"5"}],"essential":true,"image":"vad1mo/hello-world-rest","logConfiguration":{"logDriver":"awslogs","options":{"awslogs-group":"/ecs/inventory-pipeline-pilot","awslogs-region":"us-east-1","awslogs-stream-prefix":"web"}},"mountPoints":[],"name":"inv-pipe-s3-lambda-pilot","portMappings":[{"containerPort":5050,"hostPort":5050,"protocol":"tcp"}],"volumesFrom":[]}]
+  cpu = 512
+  execution_role_arn = arn:aws:iam::421956431754:role/inv-pipe-s3-ecs-exec-role-pilot
+  family = inv-pipe-s3-pilot
+  memory = 1024
+  network_mode = awsvpc
+  placement_constraints.# = 0
+  requires_compatibilities.# = 1
+  requires_compatibilities.3072437307 = FARGATE
+  revision = 7
+  tags.% = 0
+  task_role_arn = arn:aws:iam::421956431754:role/inv-pipe-s3-ecs-exec-role-pilot
+  volume.# = 0
+module.resources.aws_iam_role.inv-pipe-s3-ecs-exec-role:
+  id = inv-pipe-s3-ecs-exec-role-pilot
+  arn = arn:aws:iam::421956431754:role/inv-pipe-s3-ecs-exec-role-pilot
+  assume_role_policy = {"Version":"2012-10-17","Statement":[{"Sid":"","Effect":"Allow","Principal":{"Service":"ecs-tasks.amazonaws.com"},"Action":"sts:AssumeRole"}]}
+  create_date = 2019-05-06T21:10:01Z
+  description = 
+  force_detach_policies = false
+  max_session_duration = 3600
+  name = inv-pipe-s3-ecs-exec-role-pilot
+  path = /
+  tags.% = 0
+  unique_id = AROAWEPUQF6FJWXTAT5CJ
+module.resources.aws_iam_role.inv-pipe-s3-lambda-exec-role:
+  id = inv-pipe-s3-lambda-exec-role-pilot
+  arn = arn:aws:iam::421956431754:role/inv-pipe-s3-lambda-exec-role-pilot
+  assume_role_policy = {"Version":"2012-10-17","Statement":[{"Sid":"","Effect":"Allow","Principal":{"Service":"lambda.amazonaws.com"},"Action":"sts:AssumeRole"}]}
+  create_date = 2019-05-06T21:10:01Z
+  description = 
+  force_detach_policies = false
+  max_session_duration = 3600
+  name = inv-pipe-s3-lambda-exec-role-pilot
+  path = /
+  tags.% = 0
+  unique_id = AROAWEPUQF6FCSJ5ORJUM
+module.resources.aws_iam_role_policy.inv-pipe-s3-ecs-policy:
+  id = inv-pipe-s3-ecs-exec-role-pilot:inv-pipe-s3-ecs-policy-pilot
+  name = inv-pipe-s3-ecs-policy-pilot
+  policy = {
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "cloudwatch:*",
+        "logs:*"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "ecr:GetAuthorizationToken",
+        "ecr:BatchCheckLayerAvailability",
+        "ecr:GetDownloadUrlForLayer",
+        "ecr:BatchGetImage",
+        "logs:CreateLogStream",
+        "logs:PutLogEvents",
+        "ecs:List*",
+        "ecs:Describe*"
+      ],
+      "Resource": "*"
+    }
+  ]
+}
+
+  role = inv-pipe-s3-ecs-exec-role-pilot
+module.resources.aws_iam_role_policy.inv-pipe-s3-lambda-policy:
+  id = inv-pipe-s3-lambda-exec-role-pilot:inv-pipe-s3-lambda-policy-pilot
+  name = inv-pipe-s3-lambda-policy-pilot
+  policy = {
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "cloudwatch:*",
+        "logs:*"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "ecs:RunTask"
+      ],
+      "Resource": [
+        "arn:aws:ecs:us-east-1:421956431754:task-definition/inv-pipe-s3-pilot*"
+      ]
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole"
+      ],
+      "Resource": [
+        "arn:aws:iam::421956431754:role/inv-pipe-s3-ecs-exec-role-pilot"
+      ]
+    }
+  ]
+}
+
+  role = inv-pipe-s3-lambda-exec-role-pilot
+module.resources.aws_lambda_function.inv-pipe-s3-lambda:
+  id = inv-pipe-s3-lambda
+  arn = arn:aws:lambda:us-east-1:421956431754:function:inv-pipe-s3-lambda
+  dead_letter_config.# = 0
+  description = 
+  environment.# = 0
+  filename = ../../build/inv-pipe-s3-lambda.zip
+  function_name = inv-pipe-s3-lambda
+  handler = handler.handler
+  invoke_arn = arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:421956431754:function:inv-pipe-s3-lambda/invocations
+  kms_key_arn = 
+  last_modified = 2019-06-07T18:20:48.840+0000
+  layers.# = 0
+  memory_size = 128
+  publish = false
+  qualified_arn = arn:aws:lambda:us-east-1:421956431754:function:inv-pipe-s3-lambda:$LATEST
+  reserved_concurrent_executions = -1
+  role = arn:aws:iam::421956431754:role/inv-pipe-s3-lambda-exec-role-pilot
+  runtime = nodejs6.10
+  source_code_hash = zWsHIDOLhSSbvQuVzXiC3E5f0lTiu7B5fd4pE36edYk=
+  source_code_size = 712
+  tags.% = 0
+  timeout = 3
+  tracing_config.# = 1
+  tracing_config.0.mode = PassThrough
+  version = $LATEST
+  vpc_config.# = 0
+module.resources.aws_lambda_permission.inv-pipe-s3-lambda-permission:
+  id = AllowExecutionFromCloudWatch
+  action = lambda:InvokeFunction
+  function_name = inv-pipe-s3-lambda
+  principal = events.amazonaws.com
+  qualifier = 
+  source_arn = arn:aws:events:us-east-1:421956431754:rule/inv-pipe-s3-lambda-trigger
+  statement_id = AllowExecutionFromCloudWatch
+module.resources.data.archive_file.lambda_zip:
+  id = 657bae9de13a50782627e543baa17fe9de31825f
+  output_base64sha256 = zWsHIDOLhSSbvQuVzXiC3E5f0lTiu7B5fd4pE36edYk=
+  output_md5 = b01fd58893fae6cb80e14053f2fd753a
+  output_path = ../../build/inv-pipe-s3-lambda.zip
+  output_sha = 657bae9de13a50782627e543baa17fe9de31825f
+  output_size = 712
+  source.# = 0
+  source_file = ../../handler.js
+  type = zip
+[0m
+[0m
+[0m
+[0m
+[0m
+[0m
+[0m[0m

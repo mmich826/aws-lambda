@@ -1,0 +1,11 @@
+.tmp
+.git
+node_modules
+.settings
+*.log
+.idea
+.vscode
+*.iml
+*.swp
+.swp
+**/*/.terraform
